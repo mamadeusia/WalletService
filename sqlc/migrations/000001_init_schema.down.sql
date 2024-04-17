@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS internal_wallet;
+DROP TABLE IF EXISTS wallet;

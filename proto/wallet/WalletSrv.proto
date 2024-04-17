@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+package WalletSrv;
+
+option go_package = "./proto;WalletSrv";
+
+service WalletSrv {
+	rpc CreateNewInternalWallet(CreateNewInternalWalletRequest) returns (CreateNewInternalWalletResponse) {}
+	rpc AddExternalWallet(AddExternalWalletRequest) returns (AddExternalWalletResponse) {}
+
+	rpc InternalVoteOnProposal(InternalVoteOnProposalRequest) returns (InternalVoteOnProposalResponse) {}
+	rpc ExternalVoteOnProposal(ExternalVoteOnProposalRequest) returns (ExternalVoteOnProposalResponse) {}
+	
+	// one active reciept for each user at the time 
+	// implement in last steps 
+	rpc Transfer(TransferRequest) returns (TransferResponse) {}
+	rpc CreateRecieptQrcode(CreateRecieptQrcodeRequest) returns (CreateRecieptQrcodeResponse) {}
+}
+
+enum Network {
+	BSC = 0 ;
+}
+
+enum Asset {
+	USDC = 0 ;
+}
+
+message TransferRequest {
+	string user_id = 1 ; 
+	Network network = 2 ; 
+	Asset asset = 3 ;
+	int32 amount = 4 ;
+}
+message TransferResponse {
+	string tx_id = 1 ;
+}
+
+message CreateNewInternalWalletRequest {
+	string user_id = 1 ; 
+	Network network = 2 ; 
+	Asset asset = 3 ;
+}
+
+message CreateNewInternalWalletResponse {
+	string address = 1 ; 
+}
+
+message AddExternalWalletRequest {
+	string user_id = 1 ;
+	string address = 2 ;
+	Network network = 3 ; 
+	Asset asset = 4 ;
+}
+
+message AddExternalWalletResponse {}
+
+
+message CreateRecieptQrcodeRequest{
+	string user_id = 1 ; 
+	Network network = 2 ; 
+	Asset asset = 3 ;	
+	int32 amount = 4 ;
+}
+
+message CreateRecieptQrcodeResponse{
+	string qr_code = 1 ; 
+}
+
+enum VoteType {
+	For = 0 ; 
+	Against = 1 ;
+	Abstain = 2 ;
+}
+
+message InternalVoteOnProposalRequest {
+	string user_id = 1 ; 
+	string proposalId = 2 ;  
+	VoteType type = 3; 
+	// repeated bytes proofs = 4 ; //we should get it from blockchain service and maybe it's not necessary 
+}
+
+message InternalVoteOnProposalResponse {
+	string tx_id = 1 ;
+}
+
+
+message ExternalVoteOnProposalRequest {
+	string user_id = 1 ;
+	string proposalId = 2 ;  
+	VoteType type = 3; 
+	// repeated bytes proofs = 4 ; 
+}
+
+message ExternalVoteOnProposalResponse {
+	string deeplink_url =1 ; 
+}

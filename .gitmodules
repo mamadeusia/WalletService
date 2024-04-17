@@ -1,0 +1,3 @@
+[submodule "trustwallet"]
+	path = trustwallet
+	url = git@github.com:trustwallet/wallet-core.git
